@@ -11,8 +11,11 @@ int main(int argc, const char** argv)
   nvvk::ContextCreateInfo deviceInfo;  // One can modify this to load different extensions or pick the Vulkan core version
   deviceInfo.apiMajor = 1;             // Specify the version of Vulkan we'll use
   deviceInfo.apiMinor = 2;
+
   // Required by KHR_acceleration_structure; allows work to be offloaded onto background threads and parallelized
   deviceInfo.addDeviceExtension(VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME);
+  //创建了一个结构体VkPhysicalDeviceAccelerationStructureFeaturesKHR，它用来表示物理设备加速结构的特性
+  //相比类vulkan用结构体多点，结构体的话不涉及方法，只是数据
   VkPhysicalDeviceAccelerationStructureFeaturesKHR asFeatures = nvvk::make<VkPhysicalDeviceAccelerationStructureFeaturesKHR>();
   deviceInfo.addDeviceExtension(VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME, false, &asFeatures);
   VkPhysicalDeviceRayQueryFeaturesKHR rayQueryFeatures = nvvk::make<VkPhysicalDeviceRayQueryFeaturesKHR>();
