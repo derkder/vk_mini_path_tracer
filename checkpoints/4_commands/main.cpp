@@ -59,7 +59,7 @@ int main(int argc, const char** argv)
   VkCommandBuffer cmdBuffer;
   NVVK_CHECK(vkAllocateCommandBuffers(context, &cmdAllocInfo, &cmdBuffer));
 
-  // Begin recording
+  // Begin recording录制命令
   VkCommandBufferBeginInfo beginInfo = nvvk::make<VkCommandBufferBeginInfo>();
   beginInfo.flags                    = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
   NVVK_CHECK(vkBeginCommandBuffer(cmdBuffer, &beginInfo));
@@ -67,6 +67,7 @@ int main(int argc, const char** argv)
   // Fill the buffer
   const float     fillValue    = 0.5f;
   const uint32_t& fillValueU32 = reinterpret_cast<const uint32_t&>(fillValue);
+  //传输操作
   vkCmdFillBuffer(cmdBuffer, buffer.buffer, 0, bufferSizeBytes, fillValueU32);
 
   // Add a command that says "Make it so that memory writes by the vkCmdFillBuffer call
@@ -74,6 +75,8 @@ int main(int argc, const char** argv)
   // so the CPU can read the data.") To do this, we use a memory barrier.
   // This is one of the most complex parts of Vulkan, so don't worry if this is
   // confusing! We'll talk about pipeline barriers more in the extras.
+  //管道屏障：同步不同的管道阶段集
+  // 在整个GPU同步内存
   VkMemoryBarrier memoryBarrier = nvvk::make<VkMemoryBarrier>();
   memoryBarrier.srcAccessMask   = VK_ACCESS_TRANSFER_WRITE_BIT;  // Make transfer writes
   memoryBarrier.dstAccessMask   = VK_ACCESS_HOST_READ_BIT;       // Readable by the CPU

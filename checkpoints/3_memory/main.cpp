@@ -46,6 +46,7 @@ int main(int argc, const char** argv)
 
   // In future chapters, we'll program the GPU to write to the buffer.
   // For now, let's read back undefined memory.
+  //在gpu创建了buffer之后，先不进行任何操作，下面演示cpu从gpu读
 
   // Get the image data back from the GPU
   void*  data    = allocator.map(buffer);

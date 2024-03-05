@@ -66,7 +66,7 @@ int main(int argc, const char** argv)
   beginInfo.flags                    = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
   NVVK_CHECK(vkBeginCommandBuffer(cmdBuffer, &beginInfo));
 
-  // Fill the buffer
+  // Fill the buffer，这里在buffer里填数据，后面输出成.hdr
   const float     fillValue    = 0.5f;
   const uint32_t& fillValueU32 = reinterpret_cast<const uint32_t&>(fillValue);
   vkCmdFillBuffer(cmdBuffer, buffer.buffer, 0, bufferSizeBytes, fillValueU32);
@@ -100,6 +100,7 @@ int main(int argc, const char** argv)
 
   // Get the image data back from the GPU
   void* data = allocator.map(buffer);
+  //这告诉stbi_write_hdr写入图像
   stbi_write_hdr("out.hdr", render_width, render_height, 3, reinterpret_cast<float*>(data));
   allocator.unmap(buffer);
 
